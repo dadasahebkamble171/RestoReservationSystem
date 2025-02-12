@@ -1,0 +1,248 @@
+﻿
+@{
+    ViewBag.Title = "AdminIndex";
+    Layout = "~/Views/Shared/Admin_Layout.cshtml";
+
+    var reservlis = TempData["reservList"] as List<RestoReservationSystem.Models.Reservation>;
+    int mon = 0, tues = 0, wed = 0, thus = 0, fri = 0, sat = 0, sun = 0, reserv = 0, cancel = 0, comp = 0;
+
+    foreach(var r in reservlis)
+    {
+        if(r.Day == "Monday,")
+        {
+            mon++;
+        }
+        if (r.Day == "Tuesday,")
+        {
+            tues++;
+        }
+        if (r.Day == "Wednesday,")
+        {
+            wed++;
+        }
+        if (r.Day == "Thursday,")
+        {
+            thus++;
+        }
+        if (r.Day == "Friday,")
+        {
+            fri++;
+        }
+        if (r.Day == "Saturday,")
+        {
+            sat++;
+        }
+        if (r.Day == "Sunday,")
+        {
+            sun++;
+        }
+        if (r.Status == "Reserved")
+        {
+            reserv++;
+        }
+        if (r.Status == "Canceled")
+        {
+            cancel++;
+        }
+        if (r.Status == "Completed")
+        {
+            comp++;
+        }
+
+
+
+    }
+
+
+}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<div class="container mt-4">
+    <h2 class="mb-3">Reservation Reports</h2>
+
+    <!-- Filters Section -->
+    <div class="card p-3 mb-4">
+        <h5>Filter Reports</h5>
+        <form id="filterForm">
+            <div class="row">
+                <div class="col-md-3">
+                    <label for="startDate">Start Date:</label>
+                    <input type="date" id="startDate" class="form-control">
+                </div>
+                <div class="col-md-3">
+                    <label for="endDate">End Date:</label>
+                    <input type="date" id="endDate" class="form-control">
+                </div>
+                <div class="col-md-3">
+                    <label for="status">Status:</label>
+                    <select id="status" class="form-control">
+                        <option value="">All</option>
+                        <option value="reserved">Reserved</option>
+                        <option value="canceled">Canceled</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                </div>
+                <div class="col-md-3 d-flex align-items-end">
+                    <button type="button" class="btn btn-primary w-100" onclick="filterReservations()">Apply Filter</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="row text-center mb-4">
+        <div class="col-md-3">
+            <div class="card p-3">
+                <h5>Total Reservations</h5>
+                <h3 id="totalReservations">@reserv</h3>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card p-3">
+                <h5>Canceled</h5>
+                <h3 id="canceledReservations">@cancel</h3>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card p-3">
+                <h5>Completed</h5>
+                <h3 id="noShowReservations">@comp</h3>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card p-3">
+                <h5>Peak Hour</h5>
+                <h3 id="peakHour">7:00 PM</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- Table Section -->
+    <div class="card p-3 mb-4">
+        <h5>Reservation List</h5>
+        <table class="table table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Customer Name</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Guests</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="reservationTable">
+                @{
+                    var reservlist = TempData["reservList"] as List<RestoReservationSystem.Models.Reservation>;
+
+                    foreach (var row in reservlist)
+                    {
+                        <tr>
+                            <td>@row.ReservationId</td>
+                            <td>@row.UserName</td>
+                            <td>@row.Date</td>
+                            <td>@row.Time</td>
+                            <td>@row.Capacity</td>
+                            <td>@row.Status</td>
+                        </tr>
+                    }
+                }
+
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Export & Print Buttons -->
+    <div class="text-end mb-4">
+        <button class="btn btn-success me-2" onclick="exportToCSV()">Export to CSV</button>
+        <button class="btn btn-secondary" onclick="window.print()">Print</button>
+    </div>
+
+    <!-- Chart Section -->
+    <div class="card p-3">
+        <h5>Reservations Trend</h5>
+        <canvas id="reservationChart"></canvas>
+    </div>
+</div>
+
+<script>
+    
+
+    function exportToCSV() {
+        let csvContent = "ID,Customer Name,Date,Time,Guests,Status\n";
+        document.querySelectorAll("#reservationTable tr").forEach(row => {
+            let cols = row.querySelectorAll("td");
+            let rowData = Array.from(cols).map(td => td.textContent).join(",");
+            csvContent += rowData + "\n";
+        });
+        let blob = new Blob([csvContent], { type: "text/csv" });
+        let link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = "reservation_reports.csv";
+        link.click();
+    }
+
+    let ctx = document.getElementById('reservationChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+            datasets: [{
+                label: 'Reservations',
+                data: [ @mon, @tues, @wed, @thus, @fri, @sat, @sun],
+                backgroundColor: 'rgba(54, 162, 235, 0.6)'
+            }]
+        }
+    });
+
+    function formatDate(inputDate) {
+        const date = new Date(inputDate);  // Convert string to Date object
+
+        const options = {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        };
+
+        return date.toLocaleDateString('en-US', options);
+    }
+
+    function filterReservations() {
+        //code for status filter
+        let status = document.getElementById("status").value;
+        let rows = document.querySelectorAll("#reservationTable tr");
+        rows.forEach(row => {
+            let statusCell = row.cells[5].textContent.trim().toLowerCase();
+            if (status === "" || statusCell === status.toLowerCase()) {
+                row.style.display = "";
+            } else {
+                row.style.display = "none";
+            }
+        });
+
+
+        //code for date filter
+        let covstrdt = document.getElementById("startDate").value;
+        let enddt = document.getElementById("startDate").value;
+
+        if (covstrdt != null && enddt != null) {
+            let startDate = formatDate(covstrdt);
+            let endDate = formatDate(enddt);
+            let status = document.getElementById("status").value;
+            let rows = document.querySelectorAll("#reservationTable tr");
+            rows.forEach(row => {
+                let dateCell = row.cells[2].textContent.trim();
+                let statusCell = row.cells[5].textContent.trim().toLowerCase();
+                let dateValid = (!startDate || dateCell >= startDate) && (!endDate || dateCell <= endDate);
+                let statusValid = status === "" || statusCell === status.toLowerCase();
+                row.style.display = dateValid && statusValid ? "" : "none";
+            });
+        }
+    }
+
+
+</script>
+

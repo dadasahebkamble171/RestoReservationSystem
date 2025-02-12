@@ -1,0 +1,70 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<div class="body-container">
+
+    <div class="content px-0 mx-0">
+        <div class="heroTitle"><b>Welcome to Gourmet Dine</b></div>
+        <div class="Hsubtitle">Experience the best dining with us. Book your Restaurant now!</div>
+        @Html.ActionLink(
+linkText: "Book table now",
+actionName: "Restaurants",
+controllerName: "Home",
+routeValues: null,
+htmlAttributes: new { @class = "btn btn-warning mt-5 fs-2 px-5" })
+    </div>
+
+</div>
+
+@*About Us*@
+<div style="display: flex; flex-direction: row;" id="AboutUs">
+    <div style="padding-left: 5%; padding-top: 10%; width: 50%; height: 80vh;display: flex; align-items: center;flex-direction: column;">
+        <div style="width: 90%;">
+            <h2 class="text-uppercase text-muted">Know</h2>
+            <div class="section-title" style="font-size: 100px; margin: 0; line-height: 100px;"><u>ABOUT US</u></div>
+        </div>
+        <div style="width: 90%;"><p class="section-subtitle" style="margin-top: 10%; font-size: 30px; font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; line-height: 100%;">Welcome to reataurant reservation system with focus on premium service</p></div>
+        <div style="width: 90%;">
+            <p class="about-description" style="font-size: 20px; margin-top: 5%;">
+                Restaurant reservation system is dedicated to making your dining experience easier and more enjoyable. With our simple and intuitive platform, you can quickly book a table at top restaurants, check real-time availability, and enjoy hassle-free reservations. Discover the convenience of seamless dining plans and make your next meal unforgettable!
+            </p>
+        </div>
+    </div>
+    <div style="width: 50%; height: 100vh; display: flex; align-items: center; justify-content: center;">
+        <div class="col-lg-6 image-grid" style="width: 80%; margin-left: 10%;">
+            <div class="row g-3">
+                <div class="col-10">
+                    <img src="../../SiteImages/about 1.jpg" alt="Restaurant Interior" class="img-fluid">
+                </div>
+                <div class="col-5">
+                    <img src="../../SiteImages/about 2.jpg" alt="Dining Area" class="img-fluid">
+                </div>
+                <div class="col-5">
+                    <img src="../../SiteImages/about3.jpg" class="img-fluid">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Contact pahe*@
+<div style="display: flex; flex-direction: row; background-color: rgb(214, 214, 248);" id="ContactUs">
+    <div style=" padding-right: 5%; width: 50%; height: 100vh;display: flex; align-items: center;justify-content:center; flex-direction: column;">
+        <img src="../../SiteImages/contact anime.png" height="80%" width="100%">
+    </div>
+    <div style="padding-right: 5%; width: 50%; height: 100vh; display: flex; flex-direction: column; justify-content: center;">
+        <div class="section-title-contact" style="font-size: 100px; margin: 0; line-height: 100px;"><b>CONTACT</b>&nbspUS</div>
+        <div style="margin-top: 5%;">
+            <div style="margin-bottom: 2%;"><a href="https://maps.app.goo.gl/azVKRZTtFXUFufuL9" style="text-decoration: none; font-size: 25px;"><img src="../../SiteImages/pin.png" height="35px" width="35px">&nbsp&nbsp&nbsp&nbsp&nbspVisit Our branch location</a></div>
+            <div style="margin-bottom: 2%; font-size: 25px;"><img src="../../SiteImages/phone.png" height="35px" width="35px">&nbsp&nbsp&nbsp&nbsp&nbsp+91 91346-34567</div>
+            <div style="margin-bottom: 2%; font-size: 25px;"><img src="../../SiteImages/mail.png" height="35px" width="35px">&nbsp&nbsp&nbsp&nbsp&nbsprestoreserv@gmail.com</div>
+        </div>
+        <a href="mailto:sandeepbabar1572002@gmail.com" target="_blank" class="btn btn-primary mt-4 w-50 fs-3">Contact now</a>
+        <p class="mt-5 fs-5">
+            Need assistance or have questions? We're here to help! Reach out to us for any inquiries or support regarding your restaurant reservations. Our team is dedicated to ensuring a smooth and enjoyable booking experience. Contact us today, and we'll get back to you as soon as possible!
+        </p>
+    </div>
+</div>

@@ -1,0 +1,118 @@
+﻿@model RestoReservationSystem.Models.User
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <meta name="viewport" content="width=device-width" />
+    <title>emailVerification</title>
+    <style>
+        body {
+            margin-top: 8%;
+        }
+
+        .signupBox {
+            padding: 30px;
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Step 1 -->
+    <div class="step" id="step1">
+
+        <div class="modal-dialog modal-dialog-centered w-25 border-3 shadow rounded signupBox">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="exampleModalToggleLabel2"><b>Verify Your Email for Sign Up</b></h4>
+                </div>
+                <hr />
+                @using (Html.BeginForm("SendOTP", "UserAccount", FormMethod.Post, new { @class = "needs-validation", novalidate = "novalidate" }))
+                {
+                    <div class="mb-3">
+                        <!-- <label for="validationCustom03" class="form-label">City</label> -->
+                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control mw-100", type = "email", placeholder = "E-mail", id = "validationCustom03", required = "required" } })
+                        @*<input type="email" name="Emlforverfy" class="form-control mw-100" id="validationCustom03" placeholder="E-mail" required>*@
+                        <div class="invalid-feedback">
+                            Please provide a valid E-mail.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <input type="submit" name="actionType" value="Send OTP" class="btn btn-warning" />
+                    </div>
+                }
+
+                @using (Html.BeginForm("VerifyOTP", "UserAccount", FormMethod.Post, new { @class = "needs-validation", novalidate = "novalidate" }))
+                {
+                    <div class="mb-3">
+                        <input type="text" name="otpcode" class="form-control" placeholder="Enter OTP" required />
+                        @if (Session["emlmsg"] != null)
+                        {
+                            <div class="alert alert-success mt-2 mb-2" role="alert">
+                                @Html.Raw(Session["emlmsg"])
+                            </div>
+                        }
+                        <div class="invalid-feedback">
+                            Please provide OTP.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <input type="submit" value="Verify" class="btn btn-dark" />
+                    </div>
+                    if (TempData["otpmsg"] != null)
+                    {
+                        <div class="alert alert-success mt-2 mb-0" role="alert">
+                            @Html.Raw(TempData["otpmsg"])
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Example starter JavaScript for disabling form submissions if there are invalid fields
+        (function () {
+            'use strict'
+
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.querySelectorAll('.needs-validation')
+
+            // Loop over them and prevent submission
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+        })()
+    </script>
+
+    <div class="d-flex justify-content-center mt-4">
+
+        @if (TempData["otpmsg"] != null && TempData["otpmsg"].ToString() == "Verified Successfully")
+        {
+            @Html.ActionLink(
+linkText: "Next",
+actionName: "UserRegister",
+controllerName: "UserAccount",
+routeValues: null,
+htmlAttributes: new { @class = "btn btn-primary" })
+        }
+    </div>
+
+
+
+</body>
+</html>

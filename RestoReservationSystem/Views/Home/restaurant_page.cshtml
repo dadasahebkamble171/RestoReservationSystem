@@ -1,0 +1,50 @@
+﻿
+@{
+    ViewBag.Title = "restaurant_page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    
+}
+
+<style>
+    .card-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start; 
+        margin: 0 7%;
+    }
+</style>
+
+<div style="height: 50vh; width: 100%; display: flex; align-items: center; justify-content: center; flex-direction: column;">
+    <h1>Welcome to restaurant</h1>
+    <button class="btn btn-primary">Book table</button>
+</div>
+
+<div class="tab-pane fade show active" id="posts" role="tabpanel" aria-labelledby="posts-tab">
+    <div class="card-container">
+        @{ 
+            var rows = ViewBag.tablesInf as List<RestoReservationSystem.Models.Table>;
+
+            foreach (var items in rows)
+            {
+                    <div class="card mb-3 mx-3" style="width: 18rem;">
+                        <img src="../../Input_Images/tbl_placeholder.jpg" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">@items.Catagory</h5>
+                            <p class="card-text" style="height: 75px; overflow: hidden;">Table Capacity : @items.Capacity </p>
+                            
+                                @Html.ActionLink(
+                                linkText: "Book Now",
+                                actionName: "tbl_booking",
+                                controllerName: "Home",
+                                routeValues: new { id = items.TableId },
+                                htmlAttributes: new { @class = "btn btn-dark" })
+                                @*<a href="#" class="btn btn-dark">Read More</a>*@
+                            </div>
+                    </div>
+                }
+            }
+        </div>
+</div>
+
+

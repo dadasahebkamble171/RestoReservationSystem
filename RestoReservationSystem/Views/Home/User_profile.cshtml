@@ -1,0 +1,135 @@
+﻿@using RestoReservationSystem.Models
+@model UserProfileViewModel
+@{
+    ViewBag.Title = "User_profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 style="margin: 20px 5%; padding-top: 2%">USER PROFILE</h2>
+
+<style>
+    .profile-section {
+        display: flex;
+        align-items: center;
+        padding: 20px;
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .profile-image {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        background-color: #ddd;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        color: #666;
+        margin-right: 20px;
+    }
+
+    .user-info {
+        flex: 1;
+    }
+
+        .user-info h3 {
+            margin-bottom: 10px;
+        }
+
+    .tabs-section {
+        padding: 20px;
+    }
+
+    .tab-content {
+        margin-top: 20px;
+    }
+
+    .card-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+    }
+</style>
+
+<section class="profile-section" style="margin: 0 5%">
+    <div class="profile-image">Profile Image</div>
+    <div class="user-info">
+        @{
+            foreach (var uInfo in Model.UserInfo)
+            {
+                <h3>@uInfo.Name</h3>
+                <p>UserName: @uInfo.Username</p>
+                <p>Contact: @uInfo.Phone</p>
+                <p>Email: @uInfo.Email</p>
+                <div>
+                    <button class="btn btn-outline-dark">Edit Profile</button>
+                    <button class="btn btn-dark">Button</button>
+                </div>
+            }
+        }
+    </div>
+</section>
+
+<!-- Tabs Section -->
+<section class="tabs-section" style="margin: 0 5%">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="followers-tab" data-bs-toggle="tab" data-bs-target="#followers" type="button" role="tab" aria-controls="followers" aria-selected="true">Active Reservations</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="following-tab" data-bs-toggle="tab" data-bs-target="#following" type="button" role="tab" aria-controls="following" aria-selected="false">Reservations history</button>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+
+        <!-- Active Reservations Tab -->
+        <div class="tab-pane fade show active" id="followers" role="tabpanel" aria-labelledby="followers-tab">
+            <ul class="user-list">
+                @{
+                    foreach (var Aresv in Model.ResInfo)
+                    {
+                                <li class="d-flex align-items-center justify-content-between">
+                                    <h2>@Aresv.restoName</h2>
+                                    <p>@Aresv.Catagory</p>
+                                    <p>@Aresv.Capacity seat</p>
+                                    <p><b>@Aresv.Status</b></p>
+                                    <p>@Aresv.Date</p>
+                                    <p>@Aresv.Time</p>
+
+                                    @using (Html.BeginForm("CancelReserv", "Home", FormMethod.Post))
+                                    {
+                                        @Html.Hidden("id", Aresv.ReservationId)
+                                        <button type="submit" class="btn btn-danger">Cancel Reservation</button>
+                                    }
+
+
+                                </li>
+                        <hr>
+                    }
+                }
+            </ul>
+        </div>
+
+        <!-- Following Tab -->
+        <div class="tab-pane fade" id="following" role="tabpanel" aria-labelledby="following-tab">
+            <ul class="user-list">
+                @{
+                    foreach (var Hresv in Model.HResInfo)
+                    {
+                                <li class="d-flex align-items-center justify-content-between">
+                                    <h2>@Hresv.restoName</h2>
+                                    <p>@Hresv.Catagory</p>
+                                    <p>@Hresv.Capacity seat</p>
+                                    <p>@Hresv.Date</p>
+                                    <p>@Hresv.Time</p>
+                                    <p><b>@Hresv.Status</b></p>
+                                </li>
+                        <hr>
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+</section>
+

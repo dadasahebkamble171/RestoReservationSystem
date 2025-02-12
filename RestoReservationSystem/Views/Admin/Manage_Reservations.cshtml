@@ -1,0 +1,110 @@
+﻿@using RestoReservationSystem.Models
+@model ManageResViewModel
+@{
+    ViewBag.Title = "Manage_Reservations";
+    Layout = "~/Views/Shared/Admin_Layout.cshtml";
+}
+
+<h2 style="margin: 0 3%;">MANAGE RESERVATIONS</h2>
+@if (ViewBag.stmsg != null)
+{
+    <div class="alert alert-danger mt-2 mb-0" role="alert">
+        @Html.Raw(ViewBag.stmsg)
+    </div>
+}
+<div class="px-5">
+
+    <div class="my-3 mb-5" style="border: 2px solid black; width: 75vh; border-radius: 30px; display: flex; flex-direction: row; align-items: center; padding: 0px 20px;">
+        <input type="text" id="searchInput" onkeyup="searchTable()"
+               style="height:5vh; width: 70vh; border: none; outline: 0; background-color: transparent;"
+               placeholder="Search by email or name">
+        <img src="https://img.icons8.com/?size=100&id=59878&format=png&color=000000" height="20px" width="20px" />
+    </div>
+
+    <table class="table table-striped text-center" id="reservationTable">
+        <thead class="table-dark">
+            <tr>
+                <th>Sr No.</th>
+                <th>Reservation Id</th>
+                <th>Table Id</th>
+                <th>Table Capacity</th>
+                <th>Table Catagory</th>
+                <th>Customer Name</th>
+                <th>Cust Email</th>
+                <th>Custo phone</th>
+                <th>Reservation time</th>
+                <th>Reservation day</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int i = 1;
+                foreach (var items in Model.reserv)
+                {
+                    <tr>
+                        <td>@i</td>
+                        <td>@items.ReservationId</td>
+                        <td>@items.TableId</td>
+                        <td>@items.Capacity</td>
+                        <td>@items.Catagory</td>
+                        <td class="customer-name">@items.UserName</td>
+                        <td class="customer-email">@items.UserEmail</td>
+                        <td>@items.Contact</td>
+                        <td>@items.Time</td>
+                        <td>@items.Date</td>
+                        <td>@items.Status</td>
+                        <td>
+                            @using (Html.BeginForm("Manage_Reservations", "Admin", FormMethod.Post))
+                            {
+                                if (items.Status == "Canceled" || items.Status == "Completed")
+                                {
+                                    <p><b>No Action</b></p>
+                                }
+                                else
+                                {
+                                    <div>
+                                        @Html.Hidden("id", items.ReservationId)
+                                        <button type="submit" class="btn btn-danger">Completed</button>
+                                    </div>
+                                }
+                            }
+                        </td>
+                    </tr>
+                    i++;
+
+                }
+            }
+        </tbody>
+    </table>
+
+
+
+    <script>
+        function searchTable() {
+            var input, filter, table, tr, tdName, tdEmail, i, txtValueName, txtValueEmail;
+            input = document.getElementById("searchInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("reservationTable");
+            tr = table.getElementsByTagName("tr");
+
+            for (i = 1; i < tr.length; i++) { // Start from 1 to skip the header row
+                tdName = tr[i].getElementsByClassName("customer-name")[0];
+                tdEmail = tr[i].getElementsByClassName("customer-email")[0];
+
+                if (tdName || tdEmail) {
+                    txtValueName = tdName ? tdName.textContent || tdName.innerText : "";
+                    txtValueEmail = tdEmail ? tdEmail.textContent || tdEmail.innerText : "";
+
+                    if (txtValueName.toUpperCase().includes(filter) || txtValueEmail.toUpperCase().includes(filter)) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
+
+</div>

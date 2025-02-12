@@ -1,0 +1,20 @@
+﻿
+@{
+    ViewBag.Title = "deleteTbl";
+    Layout = "~/Views/Shared/Admin_Layout.cshtml";
+}
+
+
+<div class="h-100 w-100 text-center bg-info">
+    <h2>Table info deleted successfully !</h2>
+
+
+    @Html.ActionLink(
+linkText: "Go back",
+actionName: "ManageTables",
+controllerName: "Admin",
+routeValues: null,
+htmlAttributes: new { @class = "btn btn-dark" })
+
+</div>
+

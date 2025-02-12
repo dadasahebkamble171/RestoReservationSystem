@@ -1,0 +1,14 @@
+﻿/* Set padding to keep content from hitting the edges */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.body-content {
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+

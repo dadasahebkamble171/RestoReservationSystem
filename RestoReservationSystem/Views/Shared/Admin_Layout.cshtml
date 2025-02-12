@@ -1,0 +1,114 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <style>
+        body {
+            margin-top: 100px;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 30px;
+            background-color: black;
+            z-index: 1000;
+        }
+
+        a {
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand fs-3" href="#">@Session["validAdminName"].ToString()</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse mx-5" id="navbarSupportedContent" ">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item dropdown">
+                        @Html.ActionLink(
+                        linkText: "Restaurent Reports",
+                        actionName: "AdminIndex",
+                        controllerName: "Admin",
+                        routeValues: null,
+                        htmlAttributes: new { @class = "nav-link active" })
+                        @*<a class="nav-link active" href="#ContactUs">Restaurent Reports</a>*@
+                    </li>
+                    <li class="nav-item">
+                        @Html.ActionLink(
+                        linkText: "Manage Tables",
+                        actionName: "ManageTables",
+                        controllerName: "Admin",
+                        routeValues: null,
+                        htmlAttributes: new { @class = "nav-link active" })
+                        @*<a class="nav-link" href="#">Manage Tables</a>*@
+                    </li>
+                    <li class="nav-item">
+                        @Html.ActionLink(
+                        linkText: "Manage Reservations",
+                        actionName: "Manage_Reservations",
+                        controllerName: "Admin",
+                        routeValues: null,
+                        htmlAttributes: new { @class = "nav-link active" })
+                        @*<a class="nav-link" href="#AboutUs">Manage Reservations</a>*@
+                    </li>
+                </ul>
+                <div style="display: flex; align-items: center; justify-content: space-around; width: auto">
+                    
+
+                    @{
+                        if (Session["validAdminId"] != null)
+                        {
+                            <a href="" class="mx-5">
+                                <img src="../../SiteImages/user.png" height="25px" width="25px">
+                                <span class="text-light">&nbsp @Session["validAdminName"].ToString()</span>
+                            </a>
+
+
+                            @Html.ActionLink(
+                            linkText: "Log Out",
+                            actionName: "Logout",
+                            controllerName: "UserAccount",
+                            routeValues: null,
+                            htmlAttributes: new { @class = "btn btn-outline-light" })
+                        }
+                        else
+                        {
+                            <a href="" class="mx-5">
+                                <img src="../../SiteImages/user.png" height="25px" width="25px">
+                                <span class="text-light">&nbsp Guest</span>
+                            </a>
+
+
+                            @Html.ActionLink(
+                            linkText: "LogIn",
+                            actionName: "Login",
+                            controllerName: "UserAccount",
+                            routeValues: null,
+                            htmlAttributes: new { @class = "btn btn-outline-light" })
+                        }
+                    }
+
+
+                </div>
+            </div>
+        </div>
+    </nav>
+     
+    <div>
+        @RenderBody()
+    </div>
+</body>
+</html>

@@ -1,0 +1,60 @@
+﻿
+@{
+    ViewBag.Title = "ManageTables";
+    Layout = "~/Views/Shared/Admin_Layout.cshtml";
+}
+
+<h2 class="mx-5">Manage Tables</h2>
+
+@Html.ActionLink(
+linkText: "Add new table",
+actionName: "AddTable",
+controllerName: "Admin",
+routeValues: null,
+htmlAttributes: new { @class = "btn btn-primary mt-2 mx-5" })
+@*<a href="" class="btn btn-primary mt-2 mx-5">Add new table</a>*@
+<br />
+@if (ViewBag.successmsg != null)
+{
+    <div class="alert alert-success mt-2 mb-0" role="alert">
+        @Html.Raw(ViewBag.successmsg)
+    </div>
+}
+<br />
+<div class="px-5">
+    <table class="table table-striped text-center">
+        <thead class="table-dark">
+            <tr>
+                <th>Sirial No.</th>
+                <th>Tablee Id</th>
+                <th>Capacity</th>
+                <th>Catagory</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                var tblInfo = ViewBag.tablesInfo as List<RestoReservationSystem.Models.Table>;
+                int i = 1;
+                foreach (var items in tblInfo)
+                {
+                    <tr>
+                        <td>@i</td>
+                        <td>@items.TableId</td>
+                        <td>@items.Capacity seats</td>
+                        <td>@items.Catagory</td>
+                        <td>
+                            @Html.ActionLink(
+             linkText: "Delete",
+             actionName: "deleteTbl",
+             controllerName: "Admin",
+             routeValues: new { id = items.TableId },
+             htmlAttributes: new { @class = "btn btn-danger" })
+                        </td>
+                    </tr>
+                    i++;
+                }
+            }
+        </tbody>
+    </table>
+</div>

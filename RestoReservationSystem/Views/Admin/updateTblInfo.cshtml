@@ -1,0 +1,62 @@
+﻿@model RestoReservationSystem.Models.Table
+@{
+    ViewBag.Title = "updateTblInfo";
+    Layout = "~/Views/Shared/Admin_Layout.cshtml";
+
+    
+}
+
+<!-- Booking Section -->
+<section class="booking-section py-5 bg-light">
+    <div class="container">
+        <h1 class="text-center mb-4">Update Table</h1>
+
+        @using (Html.BeginForm("updateTblInfo", "Admin", FormMethod.Post, new { }))
+        {
+
+            @Html.AntiForgeryToken()
+            <div>
+                <label for="fullName" class="form-label">Capacity</label>
+                @Html.DropDownListFor(model => model.Capacity,
+             new SelectList(new List<SelectListItem>
+             {
+                new SelectListItem { Value = "", Text = "Select no. of guests" },
+                new SelectListItem { Value = "2", Text = "2 Seats" },
+                new SelectListItem { Value = "4", Text = "4 Seats" },
+                new SelectListItem { Value = "6", Text = "6 Seats" },
+                new SelectListItem { Value = "8", Text = "8 Seats" },
+                new SelectListItem { Value = "10", Text = "10 Seats" }
+             }, "Value", "Text"),
+             new { @class = "form-select w-50", id = "seats", @required = "required" })
+                @*<input type="text" class="form-control" id="capacity" name="fullName" required>*@
+            </div>
+            <div class="col-md-6">
+                <label for="email" class="form-label">Catagory</label>
+                @Html.DropDownListFor(model => model.Catagory,
+             new SelectList(new List<SelectListItem>
+             {
+                new SelectListItem { Value = "", Text = "Select catagory" },
+                new SelectListItem { Value = "Indoor Tables", Text = "Indoor Tables" },
+                new SelectListItem { Value = "Outdoor Tables", Text = "Outdoor Tables" },
+                new SelectListItem { Value = "Window-Side Tables", Text = "Window-Side Tables" },
+                new SelectListItem { Value = "Private Dining Rooms", Text = "Private Dining Rooms" },
+                new SelectListItem { Value = "Bar Seating", Text = "Bar Seating" },
+                new SelectListItem { Value = "Rooftop Tables", Text = "Rooftop Tables" }
+             }, "Value", "Text"),
+             new { @class = "form-select", id = "catagory", @required = "required" })
+                @*<input type="email" class="form-control" id="catagory" name="email" required>*@
+            </div>
+
+            <div class="col-12 text-center mt-5">
+                <input type="submit" name="submit" class="btn btn-success btn-lg" value="Update Table">
+            </div>
+            if (ViewBag.successmsg != null)
+            {
+                <div class="alert alert-success mt-2 mb-0" role="alert">
+                    @Html.Raw(ViewBag.successmsg)
+                </div>
+            }
+            
+        }
+    </div>
+</section>

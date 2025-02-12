@@ -1,0 +1,92 @@
+﻿@using RestoReservationSystem.Models
+@model chkavil_TblViewmodel
+@{
+    ViewBag.Title = "tbl_booking";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+
+    var date1 = DateTime.Now.ToLongDateString();
+    var date2 = DateTime.Now.AddDays(1).ToLongDateString();
+    var date3 = DateTime.Now.AddDays(2).ToLongDateString();
+
+
+}
+
+
+<div style="height: 60vh; width: 100%; display: flex; align-items: center; justify-content: center; flex-direction: column;">
+    @{
+            int tableId = 0;
+            foreach (var item in Model.tablesInfo)
+            {
+                <div class="mb-3">
+                    <h5>catagory : @item.Catagory</h5>
+                    <h5>capacity : @item.Capacity persons</h5>
+                </div>
+                    tableId = item.TableId;
+            }
+        
+        using (Html.BeginForm("tbl_booking", "Home", FormMethod.Post, new { @class = "needs-validation", id = tableId, novalidate = "novalidate" }))
+        {
+
+                <div class="mb-3">
+                    @Html.DropDownListFor(Model => Model.chk.time,
+              new SelectList(new List<SelectListItem>
+              {
+                    new SelectListItem { Value = "", Text = "Select time" },
+                    new SelectListItem { Value = "Breakfats (09AM To 12PM)", Text = "Breakfats (09AM To 12PM)" },
+                    new SelectListItem { Value = "Lunch (12PM To 03PM)", Text = "Lunch (12PM To 03PM)" },
+                    new SelectListItem { Value = "Snacks (03PM To 06PM)", Text = "Snacks (03PM To 06PM)" },
+                    new SelectListItem { Value = "Dinner (06PM To 09PM)", Text = "Dinner (06PM To 09PM)" },
+              }, "Value", "Text"),
+              new { @class = "form-select mw-100", id = "date", @required = "required" })
+                    <div class="invalid-feedback">Please select time</div>
+                </div>
+
+                <div class="mb-3">
+                    @Html.DropDownListFor(model => model.chk.date,
+              new SelectList(new List<SelectListItem>
+              {
+                    new SelectListItem { Value = "", Text = "Select date" },
+                    new SelectListItem { Value = date1.ToString(), Text = date1.ToString() },
+                    new SelectListItem { Value = date2.ToString(), Text = date2.ToString() },
+                    new SelectListItem { Value = date3.ToString(), Text = date3.ToString() }
+              }, "Value", "Text"),
+              new { @class = "form-select mw-100 mb-3", id = "time", @required = "required" })
+                    <div class="invalid-feedback">Please select date</div>
+                </div>
+
+
+                <input type="submit" name="sub" class="btn btn-warning" value="Book table" />
+            }
+       
+    }
+    @if (TempData["bookingMsg"] != null)
+    {
+        <div class="alert alert-danger mt-2 mb-0" role="alert">
+            @Html.Raw(TempData["bookingMsg"])
+        </div>
+    }
+</div>
+
+<script>
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (function () {
+        'use strict'
+
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        var forms = document.querySelectorAll('.needs-validation')
+
+        // Loop over them and prevent submission
+        Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+
+                    form.classList.add('was-validated')
+                }, false)
+            })
+    })()
+</script>

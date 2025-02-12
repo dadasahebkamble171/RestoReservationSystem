@@ -1,0 +1,165 @@
+﻿@model RestoReservationSystem.Models.Admin
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>signup</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <link href="~/Content/css/web.css" rel="stylesheet" />
+    <style>
+        body {
+            margin-top: 8%;
+        }
+
+        .signupBox {
+            padding: 30px;
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="modal-dialog modal-dialog-centered w-25 border-3 shadow rounded signupBox">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalToggleLabel2"><b>ADMIN SIGN UP</b></h4>
+            </div>
+            <hr />
+            <div class="modal-body">
+                @using (Html.BeginForm("AdminRegister", "AdminAccount", FormMethod.Post, new { @class = "needs-validation", novalidate = "novalidate" }))
+                {
+                    @*@using (Html.BeginForm())
+                        <form class="needs-validation" novalidate>*@
+                    <div class="mb-3">
+                        <!-- <label for="validationCustom01" class="form-label">First name</label> -->
+                        @Html.EditorFor(model => model.RestaurantName, new { htmlAttributes = new { @class = "form-control mw-100", id = "validationCustom01", placeholder = "Restaurant Name", required = "required" } })
+                        @*<input type="text" class="form-control mw-100" id="validationCustom01" placeholder="First name" required>*@
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <!-- <label for="validationCustom03" class="form-label">City</label> -->
+                        <input type="email" value="@Session["verifiedEmailAU"]" class="form-control mw-100" placeholder="E-mail" readonly="readonly" required />
+                        @*@Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control mw-100", type = "email", placeholder = "E-mail", id = "validationCustom03", required = "required" } })*@
+                        @*<input type="email" class="form-control mw-100" id="validationCustom03" placeholder="E-mail" required>*@
+                        <div class="invalid-feedback">
+                            Please provide a valid E-mail.
+                        </div>
+                    </div>
+                    <div class="input-group has-validation mb-3">
+                        @*<span class="input-group-text" id="basic-addon1">@@</span>*@
+                        @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control mw-100", Type="number", placeholder = "Phone No.", id = "validationCustomUsername", required = "required" } })
+                        @*<input type="text" class="form-control mw-100" placeholder="Username" id="validationCustomUsername" aria-describedby="basic-addon1" required>*@
+                        <div class="invalid-feedback">
+                            Please choose a username.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <!-- <label for="validationCustom04" class="form-label">State</label> -->
+                        @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control mw-100", type = "password", placeholder = "Create Password", id = "validationCustom04", required = "required" } })
+                        @*<input type="password" class="form-control mw-100" id="validationCustom04" placeholder="Create Password" required>*@
+                        <div class="invalid-feedback">
+                            Please create a valid password.
+                        </div>
+                    </div>
+                    <div>
+                        @Html.TextAreaFor(model => model.AboutYou,
+                        new
+                        {
+                        @id = "aboutYou",
+                        @class = "form-control mw-100",
+                        @rows = "3",
+                        @placeholder = "Tell somting about your restaurant in 30 to 60 words",
+                        @required = "required"
+                        })
+                        <div class="invalid-feedback">
+                            Please fill this required field.
+                        </div>
+                    </div>
+                    <div>
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
+                            <label class="form-check-label" for="invalidCheck">
+                                Agree to terms and conditions
+                            </label>
+                            <div class="invalid-feedback">
+                                You must agree before submitting.
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <input class="btn btn-dark" type="submit" value="Register" />
+                    </div>
+
+                    if (ViewBag.insertMessage != null)
+                    {
+                        <div class="alert alert-success mt-2 mb-0" role="alert">
+                            @Html.Raw(ViewBag.insertMessage)
+                        </div>
+                    }
+                    else if (TempData["insertMessage"] != null)
+                    {
+                        <div class="alert alert-danger mt-2 mb-0" role="alert">
+                            @Html.Raw(TempData["insertMessage"])
+                        </div>
+                    }
+
+                    @*</form>*@
+                }
+
+
+                <script>
+                    // Example starter JavaScript for disabling form submissions if there are invalid fields
+                    (function () {
+                        'use strict'
+
+                        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                        var forms = document.querySelectorAll('.needs-validation')
+
+                        // Loop over them and prevent submission
+                        Array.prototype.slice.call(forms)
+                            .forEach(function (form) {
+                                form.addEventListener('submit', function (event) {
+                                    if (!form.checkValidity()) {
+                                        event.preventDefault()
+                                        event.stopPropagation()
+                                    }
+
+                                    form.classList.add('was-validated')
+                                }, false)
+                            })
+                    })()
+                </script>
+
+
+            </div>
+            <hr />
+            <div class="modal-footer">
+
+                @Html.ActionLink(
+linkText: "Register as User (Customer)",
+actionName: "UserRegister",
+controllerName: "UserAccount",
+routeValues: null,
+htmlAttributes: new { @class = "btn btn-link" })
+
+
+                @*<button class="btn btn-dark" data-bs-target="#exampleModalToggle" data-bs-toggle="modal" data-bs-dismiss="modal">Go to log in</button>*@
+                @Html.ActionLink(
+linkText: "Go to Login",
+actionName: "Login",
+controllerName: "UserAccount",
+routeValues: null,
+htmlAttributes: new { @class = "btn btn-dark" })
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
